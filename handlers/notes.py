@@ -22,7 +22,7 @@ async def all_notes(request: Request , db: AsyncSession = Depends(get_db)):
 
     redis_data = await request.app.state.redis.get("all_notes")  # type: ignore
     if redis_data:
-        return {"notes from redis": redis_data}
+        return {"notes from redis": json.loads(redis_data)}
 
     all_notes = await db.scalars(select(Note))
     data_all_notes = all_notes.all()
